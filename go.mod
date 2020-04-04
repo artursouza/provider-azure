@@ -21,6 +21,7 @@ require (
 	github.com/onsi/gomega v1.7.0
 	github.com/pkg/errors v0.8.1
 	github.com/satori/go.uuid v1.2.0 // indirect
+	github.com/stretchr/testify v1.4.0
 	gopkg.in/alecthomas/kingpin.v2 v2.2.6
 	k8s.io/api v0.17.3
 	k8s.io/apimachinery v0.17.3

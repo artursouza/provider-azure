@@ -37,6 +37,14 @@ var (
 	SchemeBuilder = &scheme.Builder{GroupVersion: SchemeGroupVersion}
 )
 
+// CosmosDBAccount type metadata.
+var (
+	CosmosDBAccountKind             = reflect.TypeOf(CosmosDBAccount{}).Name()
+	CosmosDBAccountGroupKind        = schema.GroupKind{Group: Group, Kind: CosmosDBAccountKind}.String()
+	CosmosDBAccountKindAPIVersion   = CosmosDBAccountKind + "." + SchemeGroupVersion.String()
+	CosmosDBAccountGroupVersionKind = SchemeGroupVersion.WithKind(CosmosDBAccountKind)
+)
+
 // MySQLServer type metadata.
 var (
 	MySQLServerKind             = reflect.TypeOf(MySQLServer{}).Name()
@@ -65,4 +73,6 @@ func init() {
 	SchemeBuilder.Register(&MySQLServer{}, &MySQLServerList{})
 	SchemeBuilder.Register(&PostgreSQLServer{}, &PostgreSQLServerList{})
 	SchemeBuilder.Register(&SQLServerClass{}, &SQLServerClassList{})
+
+	SchemeBuilder.Register(&CosmosDBAccount{}, &CosmosDBAccountList{})
 }

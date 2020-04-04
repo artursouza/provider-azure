@@ -28,6 +28,7 @@ import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/google/go-cmp/cmp"
 	"github.com/onsi/gomega"
+	"github.com/stretchr/testify/assert"
 
 	"github.com/crossplane/crossplane-runtime/pkg/test"
 
@@ -163,4 +164,47 @@ func TestIsNotFound(t *testing.T) {
 		actual := IsNotFound(tt.err)
 		g.Expect(actual).To(gomega.Equal(tt.expected))
 	}
+}
+
+func TestStringHelpers(t *testing.T) {
+	t.Run("ToStringMap", func(t *testing.T) {
+		original := make(map[string]*string)
+
+		original["a"] = nil
+		original["b"] = ToStringPtr("hello")
+		original["c"] = ToStringPtr("")
+
+		result := ToStringMap(original)
+
+		assert.Equal(t, "", result["a"])
+		assert.Equal(t, "hello", result["b"])
+		assert.Equal(t, "", result["c"])
+	})
+
+	t.Run("ToStringPtrMap", func(t *testing.T) {
+		original := make(map[string]string)
+
+		original["a"] = ""
+		original["b"] = "hello"
+
+		result := ToStringPtrMap(original)
+
+		assert.Equal(t, "", *result["a"])
+		assert.Equal(t, "hello", *result["b"])
+	})
+
+	t.Run("ToString", func(t *testing.T) {
+		hello := "hello"
+		empty := ""
+
+		assert.Equal(t, "", ToString(nil))
+		assert.Equal(t, "hello", ToString(&hello))
+		assert.Equal(t, "", ToString(&empty))
+	})
+
+	t.Run("ToStringPtr", func(t *testing.T) {
+		assert.Equal(t, "", *ToStringPtr("", FieldRequired))
+		assert.Equal(t, "hello", *ToStringPtr("hello"))
+		assert.Nil(t, ToStringPtr(""))
+	})
 }
